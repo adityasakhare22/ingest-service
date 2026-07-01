@@ -21,4 +21,4 @@ def ingest():
     
     
     
-    return service.ingest_data()
+    return IngestService.ingest_data()
