@@ -18,7 +18,8 @@ def health():
 
 @app.post("/ingest")
 def ingest():
+    service = IngestService()
+    return service.ingest_data()
     
     
-    
-    return IngestService.ingest_data()
+    #return IngestService.ingest_data()
