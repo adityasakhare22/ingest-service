@@ -1,6 +1,6 @@
 import requests
 from datetime import datetime
-
+import os
 from src.ingest.clients.bq import BigQueryClient
 
 NASA_URL = "https://images-api.nasa.gov/search"
@@ -25,7 +25,7 @@ class IngestService:
         }
 
     def fetch_nasa_images(self, query):
-
+        #api_key = os.environ["NASA_API_KEY"]
         params = {
             "q": query,
             "media_type": "image"
@@ -64,8 +64,8 @@ class IngestService:
                     "keywords": ",".join(data.get("keywords", [])),
                     "media_type": data.get("media_type"),
                     "image_url": image_url,
-                    "date_created": data.get("date_created"),
-                    "ingestion_time": datetime.utcnow().isoformat()
+                    "date_created": data.get("date_created")
+                    #"ingestion_time": datetime.utcnow().isoformat()
                 }
             )
 
