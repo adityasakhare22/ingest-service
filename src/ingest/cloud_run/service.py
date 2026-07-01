@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 
-from src.ingest.cloud_run.bq_client import BigQueryClient
+from src.ingest.clients.bq import BigQueryClient
 
 NASA_URL = "https://images-api.nasa.gov/search"
 
