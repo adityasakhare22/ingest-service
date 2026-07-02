@@ -153,4 +153,3 @@ class IngestService:
         return rows
 
 
-ingest_service = IngestService()
