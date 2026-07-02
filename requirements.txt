@@ -6,3 +6,4 @@ google-cloud-storage
 google-cloud-aiplatform
 google-auth
 python-dotenv
+vertexai
