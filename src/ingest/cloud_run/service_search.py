@@ -4,37 +4,41 @@ from fastapi import UploadFile
 
 from src.ingest.clients.gcs import GCSClient
 from src.ingest.clients.vertex import VertexClient
+from src.ingest.clients.bq import BigQueryClient
 
 
 class SearchService:
 
     def __init__(self):
+
         self.gcs = GCSClient()
         self.vertex = VertexClient()
+        self.bq = BigQueryClient()
+
 
     async def search_image(self, file: UploadFile):
 
-        # Read uploaded image
         image_bytes = await file.read()
 
-        # Generate unique filename
-        image_name = f"{uuid.uuid4()}.jpg"
+        image_name = str(uuid.uuid4())
 
-        # Upload to GCS
         gcs_path = self.gcs.upload_image(
             folder="temp",
-            nasa_id=image_name.replace(".jpg", ""),
+            nasa_id=image_name,
             image_bytes=image_bytes,
             content_type=file.content_type
         )
 
-        # Generate image embedding
-        embedding = self.vertex.generate_image_embedding(gcs_path)
+        embedding = self.vertex.generate_image_embedding(
+            gcs_path
+        )
 
-        # Temporary response
+        results = self.bq.search_similar_images(
+            embedding
+        )
+
         return {
             "status": "SUCCESS",
-            "filename": image_name,
-            "gcs_path": gcs_path,
-            "embedding_dimensions": len(embedding)
+            "total_matches": len(results),
+            "matches": results
         }

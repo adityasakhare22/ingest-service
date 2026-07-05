@@ -29,3 +29,40 @@ class BigQueryClient:
             )
 
         return len(rows)
+    
+    def search_similar_images(self, embedding):
+
+        query = f"""
+        SELECT
+            base.nasa_id,
+            base.title,
+            base.description,
+            base.image_url,
+            base.gcs_image_path,
+            distance
+        FROM VECTOR_SEARCH(
+            TABLE `{self.project_id}.{self.dataset}.{self.table}`,
+            'image_embedding',
+            (
+                SELECT @embedding AS image_embedding
+            ),
+            top_k => 5
+        )
+        """
+
+        job_config = bigquery.QueryJobConfig(
+            query_parameters=[
+                bigquery.ArrayQueryParameter(
+                    "embedding",
+                    "FLOAT64",
+                    embedding
+                )
+            ]
+        )
+
+        query_job = self.client.query(
+            query,
+            job_config=job_config
+        )
+
+        return [dict(row) for row in query_job.result()]
