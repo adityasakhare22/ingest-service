@@ -42,3 +42,17 @@ class SearchService:
             "total_matches": len(results),
             "matches": results
         }
+    
+    def search_text(self, text):
+
+        embedding = self.vertex.generate_text_embedding(text)
+
+        results = self.bq.search_similar_images(
+            embedding
+        )
+
+        return {
+            "status": "SUCCESS",
+            "matches_found": len(results),
+            "matches": results
+        }

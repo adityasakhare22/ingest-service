@@ -37,7 +37,8 @@ class VertexClient:
         """
 
         embedding = self.model.get_embeddings(
-            contextual_text=text
+            contextual_text=text,
+            dimension=512
         )
 
         return embedding.text_embedding
