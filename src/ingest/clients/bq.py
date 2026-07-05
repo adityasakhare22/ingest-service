@@ -41,7 +41,7 @@ class BigQueryClient:
             base.gcs_image_path,
             distance
         FROM VECTOR_SEARCH(
-            TABLE `{self.project_id}.{self.dataset}.{self.table}`,
+            TABLE `{self.table_id}`,
             'image_embedding',
             (
                 SELECT @embedding AS image_embedding
