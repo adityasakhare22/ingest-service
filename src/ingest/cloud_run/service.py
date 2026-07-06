@@ -22,7 +22,8 @@ class IngestService:
             NASA_URL,
             params={
                 "q": search_term,
-                "media_type": "image"
+                "media_type": "image",
+                "page": 2
             },
             timeout=30
         )
